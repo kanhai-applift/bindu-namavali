@@ -98,7 +98,7 @@ endif;
 <td><?php echo $row->registrationDate;?></td>
 
 <td>
-<a href="complaint-details.php?cid=<?php echo $row->id;?>" title="View Full Details"><i class="fa fa-desktop"></i></a>&nbsp;&nbsp;
+<a href="post-details.php?cid=<?php echo $row->id;?>" title="View Full Details"><i class="fa fa-desktop"></i></a>&nbsp;&nbsp;
 </td>
 										</tr>
 									<?php

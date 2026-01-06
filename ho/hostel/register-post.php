@@ -33,8 +33,8 @@ if(isset($_POST['submit']))
             $rc=$stmt->bind_param('iisss',$cnumber,$aid,$complainttype,$complaintdetails,$imgnewfile);
             $stmt->execute();
 
-            echo "<script>alert('Complaint registerd. Complaint number is : $cnumber');</script>";
-            echo "<script type='text/javascript'> document.location = 'my-complaints.php'; </script>";
+            echo "<script>alert('Post registerd. Post number is : $cnumber');</script>";
+            echo "<script type='text/javascript'> document.location = 'my-posts.php'; </script>";
         }
     else:
         $imgnewfile = "";
@@ -43,8 +43,8 @@ if(isset($_POST['submit']))
         $rc=$stmt->bind_param('iisss',$cnumber,$aid,$complainttype,$complaintdetails,$imgnewfile);
         $stmt->execute();
 
-        echo "<script>alert('Complaint registerd. Complaint number is : $cnumber');</script>";
-        echo "<script type='text/javascript'> document.location = 'my-complaints.php'; </script>";
+        echo "<script>alert('Post registerd. Post number is : $cnumber');</script>";
+        echo "<script type='text/javascript'> document.location = 'my-posts.php'; </script>";
     endif;
 }
 ?>
@@ -58,7 +58,7 @@ if(isset($_POST['submit']))
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="theme-color" content="#3e454c">
-    <title>Complaint Registration</title>
+    <title>Post Registration</title>
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
@@ -79,7 +79,7 @@ if(isset($_POST['submit']))
 
         <div class="row">
             <div class="col-md-12">
-                <h2 class="page-title">Register POST</h2>
+                <h2 class="page-title pt-2x">Register POST</h2>
 
                 <div class="row">
                     <div class="col-md-12">

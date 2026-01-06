@@ -60,7 +60,7 @@ check_login();
 										<div class="panel panel-default">
 											<div class="panel-body bk-info text-light">
 												<div class="stat-panel text-center">
-													<div class="stat-panel-number h1">100 बिंदूनामावली नोंदवही</div>
+													<div class="stat-panel-number h1">बिंदूनामावली नोंदवही</div>
 												</div>
 											</div>
 											<a href="post_entry.php" class="block-anchor panel-footer text-center">Open &nbsp; <i class="fa fa-arrow-right"></i></a>
@@ -75,7 +75,7 @@ check_login();
 													<div class="stat-panel-number h1">Approved Post</div>
 												</div>
 											</div>
-											<a href="my-complaints.php" class="block-anchor panel-footer text-center">View My Posts &nbsp; <i class="fa fa-arrow-right"></i></a>
+											<a href="my-posts.php" class="block-anchor panel-footer text-center">View My Posts &nbsp; <i class="fa fa-arrow-right"></i></a>
 										</div>
 									</div>
 
