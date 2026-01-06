@@ -1,7 +1,7 @@
 <?php
 session_start();
 $aid = $_SESSION['id'];
-require_once("includes/config.php");
+include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
 if (!empty($_POST["roomno"])) {
 	$roomno = $_POST["roomno"];
 	$result = "SELECT count(*) FROM registration WHERE roomno=?";

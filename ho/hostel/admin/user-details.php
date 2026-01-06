@@ -14,7 +14,7 @@ check_login();
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<meta name="theme-color" content="#3e454c">
-	<title>Room Details</title>
+	<title>User Details</title>
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
@@ -51,9 +51,9 @@ popUpWin = open(URLStr,'popUpWin', 'toolbar=no,location=no,directories=no,status
 
 
 					<div class="col-md-12">
-						<h2 class="page-title" style="margin-top:4%">Rooms Details</h2>
+						<h2 class="page-title" style="margin-top:4%">Users Details</h2>
 						<div class="panel panel-default">
-							<div class="panel-heading">All Room Details</div>
+							<div class="panel-heading">All User Details</div>
 							<div class="panel-body">
 			<table id="zctb" class="table table-bordered " cellspacing="0" width="100%" border="1">
 									
@@ -61,7 +61,7 @@ popUpWin = open(URLStr,'popUpWin', 'toolbar=no,location=no,directories=no,status
 									<tbody>
 <?php	
 $aid=intval($_GET['regno']);
-	$ret="select * from registration where (regno	=?)";
+	$ret="select * from userregistration where (regno	=?)";
 $stmt= $mysqli->prepare($ret) ;
 $stmt->bind_param('s',$aid);
 $stmt->execute() ;
@@ -76,7 +76,7 @@ while($row=$res->fetch_object())
 </tr>
 <tr>
 	<th>Registration Number :</th>
-<td><?php echo $row->regno;?></td>
+<td><?php echo $row->regNo;?></td>
 <th>Apply Date :</th>
 <td colspan="3"><?php echo $row->postingDate;?></td>
 </tr>

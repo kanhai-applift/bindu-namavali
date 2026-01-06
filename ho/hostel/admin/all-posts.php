@@ -3,76 +3,56 @@ include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
 ?>
 
 	<div class="ts-main-content">
-			<?php include('includes/sidebar.php');?>
+		<?php include('includes/sidebar.php');?>
 		<div class="content-wrapper">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-12">
-						<h2 class="page-title" style="margin-top:4%">Access Log</h2>
+						<h2 class="page-title" style="margin-top:4%">प्रकरणे (All Post)</h2>
 						<div class="panel panel-default">
-							<div class="panel-heading">All Courses Details</div>
+							<div class="panel-heading">Post Details (Approved Only)</div>
 							<div class="panel-body">
 								<table id="zctb" class="display table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 									<thead>
 										<tr>
 											<th>Sno.</th>
-											<th>User Id</th>
-											<th>User Email / Reg No.</th>
-											<th>IP</th>
-											<th>City</th>
-											<th>Country</th>
-											<th>Login Time</th>
+											<th>पाकरण क्रमांक</th>
+											<th>पद</th>
+											<th> Status</th>
+											<th> Reg. Date</th>
+											<th>Action</th>
 										</tr>
 									</thead>
-									<tfoot>
-										<tr>
-											<th>Sno.</th>
-											<th>User Id</th>
-											<th>User Email /Reg No.</th>
-											<th>IP</th>
-											<th>City</th>
-											<th>Country</th>
-											<th>Login Time</th>
-										</tr>
-									</tfoot>
 									<tbody>
 <?php	
 $aid=$_SESSION['id'];
-$ret="select * from userlog";
-$stmt= $mysqli->prepare($ret) ;
-//$stmt->bind_param('i',$aid);
-$stmt->execute() ;
+$ret="SELECT * FROM complaints WHERE complaintStatus='Approved'";
+$stmt= $mysqli->prepare($ret);
+$stmt->execute();
 $res=$stmt->get_result();
 $cnt=1;
 while($row=$res->fetch_object())
-	  {
-	  	?>
-<tr><td><?php echo $cnt;;?></td>
-<td><?php echo $row->userId;?></td>
-<td><?php echo $row->userEmail;?></td>
-<td><?php echo $row->userIp;?></td>
-<td><?php echo $row->city;?></td>
-<td><?php echo $row->country;?></td>
-<td><?php echo $row->loginTime;?></td>
-										</tr>
-									<?php
+{
+?>
+<tr>
+	<td><?php echo $cnt;?></td>
+	<td><?php echo $row->ComplainNumber;?></td>
+	<td><?php echo $row->complaintType;?></td>
+	<td><?php echo $row->complaintStatus;?></td>
+	<td><?php echo $row->registrationDate;?></td>
+	<td>
+		<a href="post-details.php?cid=<?php echo $row->id;?>" title="View Full Details"><i class="fa fa-desktop"></i></a>
+	</td>
+</tr>
+<?php
 $cnt=$cnt+1;
-									 } ?>
-											
-										
+} ?>
 									</tbody>
 								</table>
-
-								
 							</div>
 						</div>
-
-					
 					</div>
 				</div>
-
-			
-
 			</div>
 		</div>
 	</div>
@@ -89,5 +69,4 @@ $cnt=$cnt+1;
 	<script src="js/main.js"></script>
 
 </body>
-
 </html>
