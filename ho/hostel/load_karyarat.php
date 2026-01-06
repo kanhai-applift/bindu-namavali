@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('includes/config.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);

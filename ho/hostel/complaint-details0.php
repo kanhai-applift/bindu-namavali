@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('includes/config.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
 
 if(!isset($_GET['cid'])){
     echo "<script>alert('Invalid Request');window.location='new-complaints.php';</script>";

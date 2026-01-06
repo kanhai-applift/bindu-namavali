@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
-include('includes/config.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
 if(isset($_POST['submit']))
 {
 $regno=$_POST['regno'];

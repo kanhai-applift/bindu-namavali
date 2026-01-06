@@ -1,7 +1,7 @@
 <?php
 session_start();
 require('fpdf/fpdf.php'); // Download FPDF and place in folder
-include('includes/config.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
 include('includes/checklogin.php');
 check_login();
 
