@@ -1,0 +1,30 @@
+# PHP
+*.log
+error_log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+/tmp/
+*.tmp
+*.cache
+
+# Uploads (if any sensitive data)
+/uploads/
+
+# Composer (if used)
+/vendor/
+composer.lock
