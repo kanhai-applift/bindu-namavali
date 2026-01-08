@@ -31,7 +31,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
                   <div class="stat-panel-title text-uppercase">Approved POST</div>
                 </div>
               </div>
-              <a href="all-complaints.php" class="block-anchor panel-footer">Full Detail <i class="fa fa-arrow-right"></i></a>
+              <a href="all-posts.php" class="block-anchor panel-footer">Full Detail <i class="fa fa-arrow-right"></i></a>
             </div>
           </div>
 
@@ -52,7 +52,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
                   <div class="stat-panel-title text-uppercase">New POST</div>
                 </div>
               </div>
-              <a href="new-complaints.php" class="block-anchor panel-footer text-center">See All &nbsp;<i class="fa fa-arrow-right"></i></a>
+              <a href="new-posts.php" class="block-anchor panel-footer text-center">See All &nbsp;<i class="fa fa-arrow-right"></i></a>
             </div>
           </div>
 
@@ -64,7 +64,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
           
 
           <!-- Total Feedbacks -->
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
             <div class="panel panel-success">
               <div class="panel-body bk-info text-light">
                 <div class="stat-panel text-center">
@@ -82,7 +82,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
               </div>
               <a href="feedbacks.php" class="block-anchor panel-footer text-center">See All &nbsp;<i class="fa fa-arrow-right"></i></a>
             </div>
-          </div>
+          </div> -->
 
           <!-- Users Notebook -->
           <div class="col-md-4">
