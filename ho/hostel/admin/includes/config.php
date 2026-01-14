@@ -1,7 +1,7 @@
 <?php
-$dbuser="audiobus_zeroin";
-$dbpass="b66W6R@L25";
+$dbuser="root";
+$dbpass="MSkrishna@14";
 $host="localhost";
-$db="audiobus_zeroin";
+$db="bindun";
 $mysqli =new mysqli($host,$dbuser, $dbpass, $db);
 ?>

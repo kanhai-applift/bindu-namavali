@@ -1,8 +1,9 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php'); 
+session_start();
+include('includes/config.php');
 
 if(!isset($_GET['cid'])){
-    echo "<script>alert('Invalid Request');window.location='new-posts.php';</script>";
+    echo "<script>alert('Invalid Request');window.location='new-complaints.php';</script>";
     exit;
 }
 
@@ -26,8 +27,8 @@ if(isset($_POST['submit']))
     $stmt1->bind_param('si',$cstatus,$cid);
     $stmt1->execute();
     
-    echo "<script>alert('Post Approved');</script>";
-    echo "<script type='text/javascript'> document.location = 'post-details.php?cid=$cid'; </script>";
+    echo "<script>alert('Complaint Approved');</script>";
+    echo "<script type='text/javascript'> document.location = 'complaint-details.php?cid=$cid'; </script>";
     exit;
 }
 
@@ -43,7 +44,7 @@ $res=$stmt->get_result();
 $row=$res->fetch_object();
 
 if(!$row){
-    echo "<script>alert('Post not found');window.location='new-posts.php';</script>";
+    echo "<script>alert('Complaint not found');window.location='new-complaints.php';</script>";
     exit;
 }
 
@@ -72,6 +73,25 @@ foreach ($post_data as $p) {
     }
 }
 ?>
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <title>Complaint Details</title>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        table, th, td { border: 1px solid black; border-collapse: collapse; text-align:center; padding:5px; }
+        th { background:#f2a65a; }
+        td:first-child { font-weight:bold; background:#f9e7c4; }
+        .status-approved { color: #28a745; font-weight: bold; }
+        .extra-row { background-color: #ffebee; font-weight: bold; }
+        .total-row { background-color: #e8f5e8; font-weight: bold; }
+    </style>
+</head>
+<body>
+<?php include('includes/header.php');?>
 <div class="ts-main-content">
     <?php include('includes/sidebar.php');?>
     <div class="content-wrapper">
@@ -206,7 +226,7 @@ foreach ($post_data as $p) {
                     $res1=$stmt1->get_result();
                     if($res1->num_rows > 0): ?>
                     <div class="panel panel-default">
-                        <div class="panel-heading">Post History</div>
+                        <div class="panel-heading">Complaint History</div>
                         <div class="panel-body">
                             <table class="table table-bordered">
                                 <tr><th>Remark</th><th>Status</th><th>Posting Date</th></tr>
@@ -227,7 +247,7 @@ foreach ($post_data as $p) {
                         <?php if($row->complaintStatus == '' || $row->complaintStatus == 'New'): ?>
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#actionModal">Approve</button>
                         <?php endif; ?>
-                        <a href="all-posts.php" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back</a>
+                        <a href="all-complaints.php" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back</a>
                     </div>
                 </div>
             </div>
@@ -241,7 +261,7 @@ foreach ($post_data as $p) {
         <div class="modal-content">
             <form method="post">
                 <div class="modal-header">
-                    <h4 class="modal-title">Approve Post</h4>
+                    <h4 class="modal-title">Approve Complaint</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">

@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
+require_once("includes/config.php");
 //For Email
 if(!empty($_POST["emailid"])) {
 	$email= $_POST["emailid"];

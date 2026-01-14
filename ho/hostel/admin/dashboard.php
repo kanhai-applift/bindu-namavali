@@ -1,6 +1,30 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
+session_start();
+include('includes/config.php');
+include('includes/checklogin.php');
+check_login();
 ?>
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="theme-color" content="#3e454c">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-social.css">
+  <link rel="stylesheet" href="css/bootstrap-select.css">
+  <link rel="stylesheet" href="css/fileinput.min.css">
+  <link rel="stylesheet" href="css/awesome-bootstrap-checkbox.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<?php include("includes/header.php");?>
 <div class="ts-main-content">
 <?php include("includes/sidebar.php");?>
 
@@ -31,7 +55,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
                   <div class="stat-panel-title text-uppercase">Approved POST</div>
                 </div>
               </div>
-              <a href="all-posts.php" class="block-anchor panel-footer">Full Detail <i class="fa fa-arrow-right"></i></a>
+              <a href="all-complaints.php" class="block-anchor panel-footer">Full Detail <i class="fa fa-arrow-right"></i></a>
             </div>
           </div>
 
@@ -52,7 +76,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
                   <div class="stat-panel-title text-uppercase">New POST</div>
                 </div>
               </div>
-              <a href="new-posts.php" class="block-anchor panel-footer text-center">See All &nbsp;<i class="fa fa-arrow-right"></i></a>
+              <a href="new-complaints.php" class="block-anchor panel-footer text-center">See All &nbsp;<i class="fa fa-arrow-right"></i></a>
             </div>
           </div>
 
@@ -64,7 +88,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
           
 
           <!-- Total Feedbacks -->
-          <!-- <div class="col-md-4">
+          <div class="col-md-4">
             <div class="panel panel-success">
               <div class="panel-body bk-info text-light">
                 <div class="stat-panel text-center">
@@ -82,7 +106,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
               </div>
               <a href="feedbacks.php" class="block-anchor panel-footer text-center">See All &nbsp;<i class="fa fa-arrow-right"></i></a>
             </div>
-          </div> -->
+          </div>
 
           <!-- Users Notebook -->
           <div class="col-md-4">
@@ -140,6 +164,18 @@ include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/header.php');
 
 
 
-<?php
-include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/admin/includes/footer.php');
-?>
+  
+
+
+<!-- Loading Scripts -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap-select.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/dataTables.bootstrap.min.js"></script>
+<script src="js/Chart.min.js"></script>
+<script src="js/fileinput.js"></script>
+<script src="js/chartData.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

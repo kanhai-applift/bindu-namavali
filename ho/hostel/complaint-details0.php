@@ -1,6 +1,6 @@
 <?php
 session_start();
-include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
+include('includes/config.php');
 
 if(!isset($_GET['cid'])){
     echo "<script>alert('Invalid Request');window.location='new-complaints.php';</script>";
@@ -50,16 +50,7 @@ if(!$row){
 
 // ✅ Fetch user post table
 $postName = $row->complaintType;
-$stmt2 = $mysqli->prepare("SELECT * FROM user_posts WHERE user_id=? AND post_name=? ORDER BY 
-    CASE category 
-        WHEN 'मंजूर_पदे' THEN 1
-        WHEN 'अतिरिक्त_पदे' THEN 2
-        WHEN 'कार्यारत_पदे' THEN 3
-        WHEN 'संभाव्य_भरवयाची_पदे' THEN 4
-        WHEN 'दिनांक' THEN 5
-        WHEN 'एकूण_भरायची_पदे' THEN 6
-        ELSE 7
-    END");
+$stmt2 = $mysqli->prepare("SELECT * FROM user_posts WHERE user_id=? AND post_name=?");
 $stmt2->bind_param('is', $row->userId, $postName);
 $stmt2->execute();
 $posts = $stmt2->get_result();
@@ -70,35 +61,15 @@ while($p = $posts->fetch_assoc()) {
     $post_data[] = $p;
 }
 
-// Separate categories for special handling
-$mfjur_pade = null;
-$atirikt_pade = null;
-$karyarat_pade = null;
-$sambhavy_pade = null;
-$dinank = null;
-$ekun_pade = null;
+// Separate the extra row (अतिरिक्त_पदे) from other rows
+$main_rows = [];
+$extra_row = null;
 
 foreach ($post_data as $p) {
-    switch($p['category']) {
-        case 'मंजूर_पदे':
-            $mfjur_pade = $p;
-            break;
-       
-        case 'कार्यारत_पदे':
-            $karyarat_pade = $p;
-            break;
-        case 'संभाव्य_भरवयाची_पदे':
-            $sambhavy_pade = $p;
-            break;
-        case 'दिनांक':
-            $dinank = $p;
-            break;
- 	case 'अतिरिक्त_पदे':
-            $atirikt_pade = $p;
-            break;
-        case 'एकूण_भरायची_पदे':
-            $ekun_pade = $p;
-            break;
+    if ($p['category'] === 'अतिरिक्त_पदे') {
+        $extra_row = $p;
+    } else {
+        $main_rows[] = $p;
     }
 }
 ?>
@@ -150,7 +121,7 @@ foreach ($post_data as $p) {
                     </div>
 
                     <!-- ✅ User Post Table -->
-                    <?php if(count($post_data) > 0): ?>
+                    <?php if(count($main_rows) > 0): ?>
                     <div class="panel panel-primary">
                         <div class="panel-heading">User Post Table Data</div>
                         <div class="panel-body">
@@ -188,126 +159,60 @@ foreach ($post_data as $p) {
                                     <td>100%</td>
                                 </tr>
 
-                                <!-- ✅ मंजूर_पदे -->
-                                <?php if($mfjur_pade): ?>
+                                <!-- ✅ Dynamic Rows (excluding extra row) -->
+                                <?php 
+                                $show_extra_after = false;
+                                foreach($main_rows as $p): 
+                                    // Check if this is the row after which we should show the extra row
+                                    if ($p['category'] === 'एकूण_भरायची_पदे') {
+                                        $show_extra_after = true;
+                                    }
+                                ?>
                                 <tr>
-                                    <td><?php echo $mfjur_pade['category']; ?></td>
-                                    <td><?php echo $mfjur_pade['col0']; ?></td>
-                                    <td><?php echo $mfjur_pade['col1']; ?></td>
-                                    <td><?php echo $mfjur_pade['col2']; ?></td>
-                                    <td><?php echo $mfjur_pade['col3']; ?></td>
-                                    <td><?php echo $mfjur_pade['col4']; ?></td>
-                                    <td><?php echo $mfjur_pade['col5']; ?></td>
-                                    <td><?php echo $mfjur_pade['col6']; ?></td>
-                                    <td><?php echo $mfjur_pade['col7']; ?></td>
-                                    <td><?php echo $mfjur_pade['col8']; ?></td>
-                                    <td><?php echo $mfjur_pade['col9']; ?></td>
-                                    <td><?php echo $mfjur_pade['col10']; ?></td>
-                                    <td><?php echo $mfjur_pade['total']; ?></td>
+                                    <td><?php echo $p['category']; ?></td>
+                                    <td><?php echo $p['col0']; ?></td>
+                                    <td><?php echo $p['col1']; ?></td>
+                                    <td><?php echo $p['col2']; ?></td>
+                                    <td><?php echo $p['col3']; ?></td>
+                                    <td><?php echo $p['col4']; ?></td>
+                                    <td><?php echo $p['col5']; ?></td>
+                                    <td><?php echo $p['col6']; ?></td>
+                                    <td><?php echo $p['col7']; ?></td>
+                                    <td><?php echo $p['col8']; ?></td>
+                                    <td><?php echo $p['col9']; ?></td>
+                                    <td><?php echo $p['col10']; ?></td>
+                                    <td><?php echo $p['total']; ?></td>
                                 </tr>
-                                <?php endif; ?>
-
                                 
-
-                                <!-- ✅ कार्यारत_पदे -->
-                                <?php if($karyarat_pade): ?>
-                                <tr>
-                                    <td><?php echo $karyarat_pade['category']; ?></td>
-                                    <td><?php echo $karyarat_pade['col0']; ?></td>
-                                    <td><?php echo $karyarat_pade['col1']; ?></td>
-                                    <td><?php echo $karyarat_pade['col2']; ?></td>
-                                    <td><?php echo $karyarat_pade['col3']; ?></td>
-                                    <td><?php echo $karyarat_pade['col4']; ?></td>
-                                    <td><?php echo $karyarat_pade['col5']; ?></td>
-                                    <td><?php echo $karyarat_pade['col6']; ?></td>
-                                    <td><?php echo $karyarat_pade['col7']; ?></td>
-                                    <td><?php echo $karyarat_pade['col8']; ?></td>
-                                    <td><?php echo $karyarat_pade['col9']; ?></td>
-                                    <td><?php echo $karyarat_pade['col10']; ?></td>
-                                    <td><?php echo $karyarat_pade['total']; ?></td>
-                                </tr>
-                                <?php endif; ?>
-
-                                <!-- ✅ संभाव्य_भरवयाची_पदे -->
-                                <?php if($sambhavy_pade): ?>
-                                <tr>
-                                    <td><?php echo $sambhavy_pade['category']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col0']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col1']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col2']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col3']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col4']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col5']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col6']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col7']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col8']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col9']; ?></td>
-                                    <td><?php echo $sambhavy_pade['col10']; ?></td>
-                                    <td><?php echo $sambhavy_pade['total']; ?></td>
-                                </tr>
-                                <?php endif; ?>
-
-                                <!-- ✅ दिनांक -->
-                                <?php if($dinank): ?>
-                                <tr>
-                                    <td><?php echo $dinank['category']; ?></td>
-                                    <td ><?php echo $dinank['col0']; ?></td>
-
-<td ><?php echo $dinank['col1']; ?></td>
-<td ><?php echo $dinank['col2']; ?></td>
-<td ><?php echo $dinank['col3']; ?></td>
-<td ><?php echo $dinank['col4']; ?></td>
-<td ><?php echo $dinank['col5']; ?></td>
-<td ><?php echo $dinank['col6']; ?></td>
-<td ><?php echo $dinank['col7']; ?></td>
-<td ><?php echo $dinank['col8']; ?></td>
-<td ><?php echo $dinank['col9']; ?></td>
-<td ><?php echo $dinank['col10']; ?></td>
-                                    <td><?php echo $dinank['total']; ?></td>
-                                </tr>
-                                <?php endif; ?>
-				
-				
-
-                                <!-- ✅ एकूण_भरायची_पदे -->
-                                <?php if($ekun_pade): ?>
-                                <tr class="total-row">
-                                    <td><?php echo $ekun_pade['category']; ?></td>
-                                    <td><?php echo $ekun_pade['col0']; ?></td>
-                                    <td><?php echo $ekun_pade['col1']; ?></td>
-                                    <td><?php echo $ekun_pade['col2']; ?></td>
-                                    <td><?php echo $ekun_pade['col3']; ?></td>
-                                    <td><?php echo $ekun_pade['col4']; ?></td>
-                                    <td><?php echo $ekun_pade['col5']; ?></td>
-                                    <td><?php echo $ekun_pade['col6']; ?></td>
-                                    <td><?php echo $ekun_pade['col7']; ?></td>
-                                    <td><?php echo $ekun_pade['col8']; ?></td>
-                                    <td><?php echo $ekun_pade['col9']; ?></td>
-                                    <td><?php echo $ekun_pade['col10']; ?></td>
-                                    <td><?php echo $ekun_pade['total']; ?></td>
-                                </tr>
-                                <?php endif; ?>
-
-				<!-- ✅ अतिरिक्त_पदे -->
-                                <?php if($atirikt_pade): ?>
+                                <!-- ✅ Show extra row after एकूण_भरायची_पदे -->
+                                <?php if ($show_extra_after && $extra_row): ?>
                                 <tr class="extra-row">
-                                    <td><?php echo $atirikt_pade['category']; ?></td>
-                                    <td><?php echo $atirikt_pade['col0']; ?></td>
-                                    <td><?php echo $atirikt_pade['col1']; ?></td>
-                                    <td><?php echo $atirikt_pade['col2']; ?></td>
-                                    <td><?php echo $atirikt_pade['col3']; ?></td>
-                                    <td><?php echo $atirikt_pade['col4']; ?></td>
-                                    <td><?php echo $atirikt_pade['col5']; ?></td>
-                                    <td><?php echo $atirikt_pade['col6']; ?></td>
-                                    <td><?php echo $atirikt_pade['col7']; ?></td>
-                                    <td><?php echo $atirikt_pade['col8']; ?></td>
-                                    <td><?php echo $atirikt_pade['col9']; ?></td>
-                                    <td><?php echo $atirikt_pade['col10']; ?></td>
-                                    <td><?php echo $atirikt_pade['total']; ?></td>
+                                    <td><?php echo $extra_row['category']; ?></td>
+                                    <td><?php echo $extra_row['col0']; ?></td>
+                                    <td><?php echo $extra_row['col1']; ?></td>
+                                    <td><?php echo $extra_row['col2']; ?></td>
+                                    <td><?php echo $extra_row['col3']; ?></td>
+                                    <td><?php echo $extra_row['col4']; ?></td>
+                                    <td><?php echo $extra_row['col5']; ?></td>
+                                    <td><?php echo $extra_row['col6']; ?></td>
+                                    <td><?php echo $extra_row['col7']; ?></td>
+                                    <td><?php echo $extra_row['col8']; ?></td>
+                                    <td><?php echo $extra_row['col9']; ?></td>
+                                    <td><?php echo $extra_row['col10']; ?></td>
+                                    <td><?php echo $extra_row['total']; ?></td>
                                 </tr>
-                                <?php endif; ?>
-
+                                <?php 
+                                    $show_extra_after = false; // Reset flag after showing
+                                    endif;
+                                endforeach; 
+                                ?>
                             </table>
+                            
+                            <?php if ($extra_row && !$show_extra_after): ?>
+                            <div class="alert alert-info">
+                                <strong>Note:</strong> 
+                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <?php endif; ?>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
+include('includes/config.php');
 date_default_timezone_set('Asia/Kolkata');
 include('includes/checklogin.php');
 check_login();
@@ -12,40 +12,61 @@ if(isset($_POST['submit']))
     $complainttype=$_POST['ctype'];
     $complaintdetails=$_POST['cdetails'];
     $imgfile=$_FILES["image"]["name"];
+    $imgfile2=$_FILES["image2"]["name"];
+    $imgfile3=$_FILES["image3"]["name"];
     $cnumber=mt_rand(100000000,999999999);
 
-    if($imgfile!=''):
-        // get the image extension
-        $extension = substr($imgfile,strlen($imgfile)-4,strlen($imgfile));
-        // allowed extensions
-        $allowed_extensions = array(".jpg","jpeg",".png",".gif",'.pdf');
-        if(!in_array($extension,$allowed_extensions))
-        {
-            echo "<script>alert('Invalid format. Only jpg / jpeg/ png /gif format allowed');</script>";
-        }
-        else
-        {
-            $imgnewfile=md5($imgfile.time()).$extension;
-            move_uploaded_file($_FILES["image"]["tmp_name"],"comnplaintdoc/".$imgnewfile);
+    // Function to validate and upload files
+    function uploadFile($file, $fileInputName) {
+        global $mysqli;
+        
+        if($file != ''):
+            // get the image extension
+            $extension = substr($file,strlen($file)-4,strlen($file));
+            // allowed extensions
+            $allowed_extensions = array(".jpg","jpeg",".png",".gif",'.pdf', '.JPG', '.JPEG', '.PNG', '.GIF', '.PDF');
+            if(!in_array($extension,$allowed_extensions))
+            {
+                return array('error' => 'Invalid format. Only jpg / jpeg/ png /gif / pdf format allowed');
+            }
+            else
+            {
+                $newfilename = md5($file.time().rand(1000,9999)).$extension;
+                move_uploaded_file($_FILES[$fileInputName]["tmp_name"],"comnplaintdoc/".$newfilename);
+                return array('success' => $newfilename);
+            }
+        else:
+            return array('success' => "");
+        endif;
+    }
 
-            $query="insert into complaints(ComplainNumber,userId,complaintType,complaintDetails,complaintDoc) values(?,?,?,?,?)";
-            $stmt = $mysqli->prepare($query);
-            $rc=$stmt->bind_param('iisss',$cnumber,$aid,$complainttype,$complaintdetails,$imgnewfile);
-            $stmt->execute();
-
-            echo "<script>alert('Post registerd. Post number is : $cnumber');</script>";
-            echo "<script type='text/javascript'> document.location = 'my-posts.php'; </script>";
-        }
-    else:
-        $imgnewfile = "";
-        $query="insert into complaints(ComplainNumber,userId,complaintType,complaintDetails,complaintDoc) values(?,?,?,?,?)";
+    // Upload all files
+    $file1_result = uploadFile($imgfile, "image");
+    $file2_result = uploadFile($imgfile2, "image2");
+    $file3_result = uploadFile($imgfile3, "image3");
+    
+    // Check for errors
+    if(isset($file1_result['error']) || isset($file2_result['error']) || isset($file3_result['error'])) {
+        $error_msg = "";
+        if(isset($file1_result['error'])) $error_msg .= "File 1: " . $file1_result['error'] . "\\n";
+        if(isset($file2_result['error'])) $error_msg .= "File 2: " . $file2_result['error'] . "\\n";
+        if(isset($file3_result['error'])) $error_msg .= "File 3: " . $file3_result['error'] . "\\n";
+        echo "<script>alert('$error_msg');</script>";
+    } else {
+        // Get file names
+        $imgnewfile = $file1_result['success'];
+        $imgnewfile2 = $file2_result['success'];
+        $imgnewfile3 = $file3_result['success'];
+        
+        // Update database query to include all files
+        $query="insert into complaints(ComplainNumber,userId,complaintType,complaintDetails,complaintDoc,complaintDoc2,complaintDoc3) values(?,?,?,?,?,?,?)";
         $stmt = $mysqli->prepare($query);
-        $rc=$stmt->bind_param('iisss',$cnumber,$aid,$complainttype,$complaintdetails,$imgnewfile);
+        $rc=$stmt->bind_param('iisssss',$cnumber,$aid,$complainttype,$complaintdetails,$imgnewfile,$imgnewfile2,$imgnewfile3);
         $stmt->execute();
 
-        echo "<script>alert('Post registerd. Post number is : $cnumber');</script>";
-        echo "<script type='text/javascript'> document.location = 'my-posts.php'; </script>";
-    endif;
+        echo "<script>alert('registered number is : $cnumber');</script>";
+        echo "<script type='text/javascript'> document.location = 'my-complaints.php'; </script>";
+    }
 }
 ?>
 
@@ -58,7 +79,7 @@ if(isset($_POST['submit']))
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="theme-color" content="#3e454c">
-    <title>Post Registration</title>
+    <title>Complaint Registration</title>
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
@@ -79,7 +100,7 @@ if(isset($_POST['submit']))
 
         <div class="row">
             <div class="col-md-12">
-                <h2 class="page-title pt-2x">Register POST</h2>
+                <h2 class="page-title">Register POST</h2>
 
                 <div class="row">
                     <div class="col-md-12">
@@ -116,9 +137,23 @@ if(isset($_POST['submit']))
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">File (if any)</label>
+<label class="col-sm-2 control-label">सेवा प्रवेश नियम </label>
 <div class="col-sm-8">
-<input type="file" name="image" id="image"  class="form-control" >
+<input type="file" name="image" id="image" class="form-control">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">आकृतीबंध </label>
+<div class="col-sm-8">
+<input type="file" name="image2" id="image2" class="form-control">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">गोषवारा </label>
+<div class="col-sm-8">
+<input type="file" name="image3" id="image3" class="form-control">
 </div>
 </div>
 

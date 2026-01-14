@@ -1,6 +1,6 @@
 <?php session_start();
 error_reporting(0);
-include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
+include('includes/config.php');
 include('includes/checklogin.php');
 check_login();
 //code for add courses

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
+include('includes/config.php');
 if(isset($_POST['login']))
 {
 $emailreg=$_POST['emailreg'];

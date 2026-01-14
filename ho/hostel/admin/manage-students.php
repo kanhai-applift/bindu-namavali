@@ -1,9 +1,20 @@
 <?php
 session_start();
-include($_SERVER['DOCUMENT_ROOT'] . '/ho/hostel/includes/config.php');
+include('includes/config.php');
 include('includes/checklogin.php');
 check_login();
 
+if(isset($_GET['del']))
+{
+	$id=intval($_GET['del']);
+	$adn="delete from registration where regNo=?";
+		$stmt= $mysqli->prepare($adn);
+		$stmt->bind_param('i',$id);
+        $stmt->execute();
+        $stmt->close();	   
+
+
+}
 ?>
 <!doctype html>
 <html lang="en" class="no-js">
@@ -15,7 +26,7 @@ check_login();
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<meta name="theme-color" content="#3e454c">
-	<title>प्रकरणे</title>
+	<title>Manage Rooms</title>
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
@@ -47,37 +58,41 @@ popUpWin = open(URLStr,'popUpWin', 'toolbar=no,location=no,directories=no,status
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-12">
-						<h2 class="page-title" style="margin-top:4%">प्रकरणे</h2>
+						<h2 class="page-title" style="margin-top:4%">Manage Registred </h2>
 						<div class="panel panel-default">
-							<div class="panel-heading">Complaint Details</div>
+							<div class="panel-heading">All Room Details</div>
 							<div class="panel-body">
 								<table id="zctb" class="display table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 									<thead>
 										<tr>
 											<th>Sno.</th>
-											<th>Post Number</th>
-											<th>Post Type</th>
-											<th>Post Status</th>
-											<th>Post Reg. Date</th>
+											<th>Name</th>
+											<th>Reg no</th>
+											<th>Contact no </th>
+											<th>no  </th>
+											<th>Seater </th>
+											<th> From </th>
 											<th>Action</th>
 										</tr>
 									</thead>
 									<tfoot>
 										<tr>
 											<th>Sno.</th>
-											<th>Post Number</th>
-											<th>Post Type</th>
-											<th>Post Status</th>
-											<th>Post Reg. Date</th>
+											<th> Name</th>
+											<th>Reg no</th>
+											<th>Contact no </th>
+											<th>no  </th>
+											<th>Seater </th>
+											<th>From </th>
 											<th>Action</th>
 										</tr>
 									</tfoot>
 									<tbody>
 <?php	
 $aid=$_SESSION['id'];
-$ret="select * from complaints where userId=?";
+$ret="select * from registration";
 $stmt= $mysqli->prepare($ret) ;
-$stmt->bind_param('i',$aid);
+//$stmt->bind_param('i',$aid);
 $stmt->execute() ;//ok
 $res=$stmt->get_result();
 $cnt=1;
@@ -85,21 +100,15 @@ while($row=$res->fetch_object())
 	  {
 	  	?>
 <tr><td><?php echo $cnt;;?></td>
-<td><?php echo $row->ComplainNumber;?></td>
-<td><?php echo $row->complaintType;?></td>
-<td><?php $cstatus=$row->complaintStatus;
-if($cstatus==''):
-	echo "New";
-else:
-echo $cstatus;
-endif;	
-
-?></td>
-<td><?php echo $row->registrationDate;?></td>
-
+<td><?php echo $row->firstName;?><?php echo $row->middleName;?><?php echo $row->lastName;?></td>
+<td><?php echo $row->regno;?></td>
+<td><?php echo $row->contactno;?></td>
+<td><?php echo $row->roomno;?></td>
+<td><?php echo $row->seater;?></td>
+<td><?php echo $row->stayfrom;?></td>
 <td>
-<a href="post-details.php?cid=<?php echo $row->id;?>" title="View Full Details"><i class="fa fa-desktop"></i></a>&nbsp;&nbsp;
-</td>
+<a href="student-details.php?regno=<?php echo $row->regno;?>" title="View Full Details"><i class="fa fa-desktop"></i></a>&nbsp;&nbsp;
+<a href="manage-students.php?del=<?php echo $row->regno;?>" title="Delete Record" onclick="return confirm('Do you want to delete');"><i class="fa fa-close"></i></a></td>
 										</tr>
 									<?php
 $cnt=$cnt+1;
