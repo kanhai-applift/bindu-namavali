@@ -1,0 +1,14 @@
+RewriteEngine On
+RewriteBase /new/
+
+# 1️⃣ API without .php
+RewriteRule ^api/([a-zA-Z0-9_-]+)$ api/$1.php [L]
+#RewriteRule ^api/ - [L]
+
+# 2️⃣ Allow direct access to api & pages
+RewriteRule ^(api|pages|assets|uploads)/ - [L]
+
+# 3️⃣ Front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?path=$1 [QSA,L]

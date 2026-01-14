@@ -1,0 +1,252 @@
+https://www.easyhindityping.com/marathi-to-english-translation 
+
+bindu_no, bindu_category, employee_name, employee_caste, employee_category, date_of_appointment, date_of_birth, date_of_retirement, caste_certificate_no, caste_validity_certificate_no, validation_committee_name, is_vacant, working, pdf
+
+
+Create a registration page with the following fields: 
+id, Registration No, Office/Organization, Name of the Head of Office, District(Amravati, Did, Buldhana, Washim, Yavatmal), Contact no, email id, password, confirm password. 
+
+
+Design database for this feature:
+The admin user who does these entries is an organization/office. So every designations that is added should be added for that particular organization/office. Every employee details that is added should be added under that user_id(organization/office). This way multiple organizations can have their own data.  The organizations/office are added as admin users in the users table with the following fields: 
+id,role,created_by,registration_no,office_name,head_name,district,contact_no,email,password_hash, status. 
+One more thing, the employee details table will also be used to enter empty data to indicate a vaccant post in that organization.
+
+I have to create a 'department employee post' like peon, clerk, manager, accountant, typist etc. Then in another form I want to fill the details of the employees working in the selected designation. These are the fields we need to add : bindu no, bindu category, employee name, employee cast and category, Date of Appointment, Date of Birth, Date of Retirement, Caste Certificate No, Designation of Officers, Caste Validity Certificate No, Name of Validation Committee, working, PDF File.
+
+
+Let me rephrase my requirement. 
+I already have table named 'designations', 'goshwara'. The table 'goshwara' has a foreign key designation_id. 
+We need to create a form with 5 fields and save it to a table called 'organisation_post' (we need to create this table).
+1) Designations dropdown for current organization from 'designations' table (if an related designation entry exists in the 'goshwara' table with is_deleted=0)
+2) Remarks textarea
+3) Service Access Rules pdf upload
+4) Layout or Blueprint pdf upload
+5) Goshwara pdf upload
+This form will use ajax for submission
+
+For the 'organisation_post' table we also need to add a column 'approved' 
+
+
+
+App architechture =========================
+Add routes in constant.php
+add related page in pages
+
+
+
+
+
+Table Structure ==================
+
+users (Superadmin / Organization)
+   │
+   ├── designations (per organization)
+   │        │
+   │        └── employees (filled + vacant posts)
+   │
+   └── user_access_logs (admin login history)
+
+districts
+   ├── users
+   └── employees
+
+
+CREATE TABLE districts (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    district_name VARCHAR(100) NOT NULL UNIQUE,
+    state_name VARCHAR(100) NOT NULL DEFAULT 'Maharashtra',
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO districts (district_name) VALUES ('Amravati'),('Akola'),('Buldhana'),('Washim'),('Yavatmal'),('Nagpur'),('Wardha'),('Chandrapur'),('Gadchiroli'),('Bhandara'),('Gondia');
+
+CREATE TABLE users (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    role ENUM('superadmin','admin') NOT NULL,
+    created_by INT UNSIGNED DEFAULT NULL,
+    registration_no VARCHAR(50) NOT NULL UNIQUE,
+    office_name VARCHAR(150) NOT NULL,
+    head_name VARCHAR(150) NOT NULL,
+    district_id INT UNSIGNED NULL,
+    contact_no VARCHAR(15) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    status ENUM('active','inactive') NOT NULL DEFAULT 'active',
+    is_deleted TINYINT(1) DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_email (email),
+    UNIQUE KEY uniq_registration (registration_no),
+    INDEX idx_role (role),
+    CONSTRAINT fk_user_created_by
+        FOREIGN KEY (created_by)
+        REFERENCES users(id)
+        ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE user_access_logs (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    ip_address VARCHAR(45) NOT NULL,
+    city VARCHAR(100) DEFAULT NULL,
+    state VARCHAR(100) DEFAULT NULL,
+    login_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_user_id (user_id),
+    INDEX idx_login_time (login_time),
+    CONSTRAINT fk_access_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE designations (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    created_ts BIGINT UNSIGNED NULL,
+    organization_id INT UNSIGNED NOT NULL,
+    designation_name VARCHAR(100) NOT NULL,
+    description VARCHAR(255) DEFAULT NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    is_deleted TINYINT(1) DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_org_designation (organization_id, designation_name),
+    INDEX idx_org (organization_id),
+    INDEX idx_created_ts (created_ts),
+    CONSTRAINT fk_designation_org
+        FOREIGN KEY (organization_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE employees (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    organization_id INT UNSIGNED NOT NULL,
+    designation_id INT UNSIGNED NOT NULL,
+    bindu_no INT NOT NULL,
+    bindu_category VARCHAR(100) NOT NULL,
+    employee_name VARCHAR(150) DEFAULT NULL,
+    employee_caste VARCHAR(100) DEFAULT NULL,
+    employee_category VARCHAR(50) DEFAULT NULL,
+    date_of_appointment DATE DEFAULT NULL,
+    date_of_birth DATE DEFAULT NULL,
+    date_of_retirement DATE DEFAULT NULL,
+    manual_date TINYINT(1) NOT NULL DEFAULT 0,
+    caste_certificate_no VARCHAR(100) DEFAULT NULL,
+    caste_cert_authority VARCHAR(100) DEFAULT NULL,
+    caste_validity_certificate_no VARCHAR(100) DEFAULT NULL,
+    validation_committee_name VARCHAR(150) DEFAULT NULL,
+    working TINYINT(1) NOT NULL DEFAULT 0,
+    pdf VARCHAR(255) DEFAULT NULL,
+    remarks TEXT DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT NULL,
+    INDEX idx_org (organization_id),
+    INDEX idx_designation (designation_id),
+    INDEX idx_binduno (bindu_no),
+    INDEX idx_working (working),
+
+    CONSTRAINT fk_employee_org
+    FOREIGN KEY (organization_id)
+    REFERENCES users(id)
+    ON DELETE CASCADE,
+
+    CONSTRAINT fk_employee_designation
+    FOREIGN KEY (designation_id)
+    REFERENCES designations(id)
+    ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE `goshwara_categories` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `category_name` VARCHAR(100),
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+INSERT INTO `goshwara_categories` ( category_name ) VALUES 
+    ("मंजूर_पदे"),
+    ("कार्यारत_पदे"),
+    ("दिनांक_भरावयाची_पदे"),
+    ("कालावधितील_संभाव्य_भरावयाची_पदे"),
+    ("एकूण_भरावयाची_पदे"),
+    ("अतिरिक्त_पदे");
+
+CREATE TABLE `goshwara` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `organization_id` int NOT NULL,
+  `designation_id` int NOT NULL,
+  `designation_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `g_category_id` int NOT NULL,
+  `g_category` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `col0` int DEFAULT '0',
+  `col1` int DEFAULT '0',
+  `col2` int DEFAULT '0',
+  `col3` int DEFAULT '0',
+  `col4` int DEFAULT '0',
+  `col5` int DEFAULT '0',
+  `col6` int DEFAULT '0',
+  `col7` int DEFAULT '0',
+  `col8` int DEFAULT '0',
+  `col9` int DEFAULT '0',
+  `col10` int DEFAULT '0',
+  `total` int DEFAULT '0',
+  `is_deleted` tinyint DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `organization_id` (`organization_id`,`designation_name`,`g_category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=445 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE `organisations_post` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `organization_id` int unsigned NOT NULL,
+  `designation_id` int unsigned NOT NULL,
+  `post_hash` char(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `designation_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remarks` text COLLATE utf8mb4_unicode_ci,
+  `service_rules_pdf` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `layout_pdf` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `goshwara_pdf` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `approved` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_org_designation` (`organization_id`,`designation_id`, `post_hash`),
+  UNIQUE KEY `uq_post_hash` (`post_hash`),
+  KEY `idx_org` (`organization_id`),
+  KEY `idx_designation` (`designation_id`),
+  KEY `idx_approved` (`approved`),
+  CONSTRAINT `organisation_post_ibfk_1` FOREIGN KEY (`organization_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `organisation_post_ibfk_2` FOREIGN KEY (`designation_id`) REFERENCES `designations` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=457 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+This is my overall design architechture for the web application. Lets call it 'roster'.
+
+This webapp is inside the folder named 'new'. This is where I've stored htaccess and the code source.
+So using htaccess the segment data after /new/ is processed as $segment[0] = aaaa, $segment[1] = bbbb and so on, from the url (www.roster.com/new/aaaa/bbbb/cccc) . $segment[0] is used as file name which is being loaded from 'pages' folder. ex: aaaa.php is being included in the index.php file this case. 
+Here's the index.php 
+<?php
+include_once('includes/header.php');
+?>
+
+<div class="d-flex">
+
+  <?php
+  include_once('includes/sidebar.php');
+  ?>
+
+  <!-- Main Content -->
+  <main class="flex-grow-1 content">
+    <!-- Include the page here -->
+    <?php require_once("pages/$current_page.php"); ?>
+  </main>
+</div>
+
+<?php
+include_once('includes/footer.php');

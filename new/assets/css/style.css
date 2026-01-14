@@ -1,0 +1,283 @@
+body {
+  overflow-x: hidden;
+}
+
+.sfs-1,
+.sfs-1 input {
+  font-size: 0.9rem;
+}
+
+.sfs-2,
+.sfs-2 input {
+  font-size: 0.8rem;
+}
+
+.sfs-3,
+.sfs-3 input {
+  font-size: 0.7rem;
+}
+
+.sfs-4,
+.sfs-4 input {
+  font-size: 0.6rem;
+}
+
+.sfs-5,
+.sfs-5 input {
+  font-size: 0.5rem;
+}
+
+/* PRINT SETTING ================================ */
+@media print {
+    /* Hide everything by default */
+    body * {
+        visibility: hidden;
+    }
+    /* Show only the printable area and its children */
+    #printableArea, #printableArea * {
+        visibility: visible;
+    }
+    /* Position the printable area at the top left of the page */
+    #printableArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    /* Hide specific elements like buttons or navbars */
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Top Navbar ============================== */
+.top-navbar {
+  background-color: #3f464d;
+  height: 56px;
+}
+
+.top-navbar .navbar-brand {
+  color: #fff;
+  font-weight: 500;
+}
+
+.top-navbar .nav-link {
+  color: #dcdcdc;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #1f252b;
+  min-height: 100vh;
+  width: 240px;
+  transition: all 0.3s;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar .nav-link {
+  color: #cfd2d6;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #2a3036;
+  color: #fff;
+}
+
+.sidebar .nav-link i {
+  font-size: 1.1rem;
+  margin-right: 10px;
+}
+
+.sidebar.collapsed .nav-link span {
+  display: none;
+}
+
+/* Main content */
+.content {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 56px);
+}
+
+/* Top Menu =============== */
+/* Bootstrap 5 submenu support */
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: .1rem;
+  display: none;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+
+
+/* Sidemenu =============== */
+/* Default: let Bootstrap handle submenu */
+.sidebar .submenu {
+  position: static;
+}
+
+/* Hover behavior when collapsed */
+@media (min-width: 992px) {
+  .sidebar.collapsed .has-submenu {
+    position: relative;
+  }
+
+  .sidebar.collapsed .has-submenu:hover .submenu {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 70px;
+    background: #212529;
+    min-width: 200px;
+    padding: 10px 0;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    border-radius: 6px;
+  }
+
+  .sidebar.collapsed .submenu a {
+    color: #fff;
+    padding: 8px 16px;
+  }
+
+  .sidebar.collapsed .submenu a:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+
+/* Dashboard ==================== */
+.dashboard-card {
+  height: 200px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.dashboard-card .card-body {
+  height: 140px;
+  font-weight: 600;
+}
+
+.dashboard-card h3 {
+  font-size: 1.8rem;
+  line-height: 1.3;
+}
+
+/* Color themes */
+.bg-blue {
+  background-color: #2f5b84;
+}
+
+.bg-sky {
+  background-color: #2da7d7;
+}
+
+.bg-green {
+  background-color: #9acb50;
+}
+
+.bg-orange {
+  background-color: #f57c3d;
+}
+
+/* Employee Form CSS ====================== */
+.manual-edit-info {
+  background: #fff8e1;
+  padding: 8px;
+  border-radius: 4px;
+  margin: 5px 0;
+  font-size: 12px;
+  border-left: 3px solid #ff9800;
+}
+
+.auto-calculation-info {
+  background: #f0fff0;
+  padding: 8px;
+  border-radius: 4px;
+  margin: 5px 0;
+  font-size: 12px;
+  border-left: 3px solid #4CAF50;
+}
+
+.date-input.manually-edited {
+  background: #fff8e1;
+  color: #ff6f00;
+  font-weight: bold;
+  border: 2px solid #ff9800;
+}
+
+.date-input.auto-calculated {
+  background: #f0f8ff;
+  color: #0066cc;
+  font-weight: bold;
+  border: 2px solid #4CAF50;
+}
+
+/* Goshwara Post CSS ======================== */
+
+
+.goshwara-form table th {
+  background: #f2a65a;
+}
+
+.goshwara-form table td:first-child {
+  font-weight: bold;
+  background: #f9e7c4;
+}
+
+.goshwara-form table input {
+  width: 70px;
+}
+
+.goshwara-form table.full-input input {
+  width: auto;
+}
+
+.goshwara-form .financial-table input {
+  width: 120px;
+}
+
+.goshwara-form table tr td:nth-child(n+2), 
+.goshwara-form table tr th:nth-child(n+2) {
+    text-align: right;
+}
+
+/* Organisation Post Details Page ======================== */
+.org_details td:first-child { font-weight:bold; background:#f9e7c4; text-align:left; padding-left:15px; }
+.org_details .percent-row { font-weight:bold; background:#e8f4f8; }
+.org_details .category-row { background:#fff; }
+.org_details .dinank-row { background:#fff3cd; }
+.org_details .kalaavadhitil-row { background:#e7f3ff; }
+.org_details .ekun-row { background:#d4edda; font-weight:bold; }
+.org_details .atirikt-row { background:#f8d7da; font-weight:bold; }
+.org_details .status-approved { color: #28a745; font-weight: bold; }
+.org_details .panel-heading { background:#007bff; color:white; }
+.org_details .negative-value { color: #dc3545; font-weight: bold; }
+.org_details .positive-value { color: #28a745; }
+.org_details .file-info { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; }
+.org_details .file-link { color: #007bff; text-decoration: underline; }
+.org_details .file-link:hover { color: #0056b3; text-decoration: none; }
+
+.org_details .file-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.org_details .file-preview { max-width: 300px; max-height: 200px; border: 1px solid #ddd; padding: 5px; margin-top: 5px; }
+.org_details .file-type-badge { 
+    background-color: #6c757d; 
+    color: white; 
+    padding: 2px 6px; 
+    border-radius: 3px; 
+    font-size: 12px; 
+    margin-left: 5px; 
+}
