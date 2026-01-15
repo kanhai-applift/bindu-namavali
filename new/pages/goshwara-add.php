@@ -1750,7 +1750,6 @@ $res = $stmt->get_result();
 <?php
 $page_scripts = [
   'https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.6/b-3.2.6/datatables.min.js',
-  'https://code.jquery.com/ui/1.14.1/jquery-ui.js',
 ];
 $inline_scripts = <<<JS
   $(function () {

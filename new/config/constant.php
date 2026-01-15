@@ -28,4 +28,9 @@ define('ALLOWED_PAGES', [
     'all-designations',
     'users-designations',
     'users-employees',
+    'shasan-nirnay',
+    'shasan-nirnay-add',
+    'shasan-nirnay-edit',
 ]);
+define('SN_VISHANY_LENGTH', 2000);
+define('SN_VISHANY_PDF_SIZE', 5); // in MB

@@ -58,3 +58,8 @@ if (!csrf_validate($_POST['csrf_token'] ?? '')) {
   ]);
   exit;
 }
+
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    respond('error', 'Unauthorized');
+}

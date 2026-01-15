@@ -16,6 +16,7 @@ error_log
 # OS
 .DS_Store
 Thumbs.db
+readme.md
 
 # Temp files
 /tmp/
@@ -23,8 +24,9 @@ Thumbs.db
 *.cache
 
 # Uploads (if any sensitive data)
-/uploads/
+uploads/
+ho/hostel/comnplaintdoc/
 
 # Composer (if used)
-/vendor/
+vendor/
 composer.lock

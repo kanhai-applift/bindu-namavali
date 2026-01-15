@@ -42,12 +42,16 @@ $result = $stmt->get_result();
 <div class="container-fluid">
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Designations of: <?= $user['office_name'] ?></h4>
+    <h4 class="mb-0">
+      जतन केलेल्या पदनामांची यादी : <?= $user['office_name'] ?>
+      <small class="text-muted sfs-2">  (Designations under this user) </small>
+    </h4>
 
     <div>
-      <a href="<?= baseUrl('dashboard/') ?>" class="btn btn-secondary">
-        <i class="bi bi-chevron-left"></i> Back to Dashboard
-      </a>
+      <button class="btn btn-secondary" onclick="window.history.back()">
+        <i class="bi bi-chevron-left"></i>
+        मागे जा (Go Back)
+      </button>
     </div>
   </div>
 

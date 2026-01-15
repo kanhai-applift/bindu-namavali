@@ -11,14 +11,14 @@
 
       <li class="nav-item">
         <a class="nav-link" href="<?= baseUrl('dashboard') ?>">
-          <i class="bi bi-people"></i>
+          <i class="bi bi-speedometer2"></i>
           <span>Dashboard</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="<?= baseUrl('registration') ?>">
-          <i class="bi bi-people"></i>
+          <i class="bi bi-person-plus"></i>
           <span>User Registration</span>
         </a>
       </li>
@@ -32,7 +32,7 @@
 
       <li class="nav-item">
         <a class="nav-link" href="<?= baseUrl('access_logs') ?>">
-          <i class="bi bi-person-lock"></i>
+          <i class="bi bi-journal-text"></i>
           <span>User Access Logs</span>
         </a>
       </li>
@@ -55,28 +55,28 @@
 
       <li class="nav-item">
         <a class="nav-link" href="<?= baseUrl('organisations-post') ?>">
-          <i class="bi bi-people"></i>
+          <i class="bi bi-list-task"></i>
           <span>Registerd Post list</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="<?= baseUrl('profile') ?>">
-          <i class="bi bi-person-lock"></i>
+          <i class="bi bi-person-circle"></i>
           <span>My Profile</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="<?= baseUrl('change-password') ?>">
-          <i class="bi bi-person-lock"></i>
+          <i class="bi bi-key"></i>
           <span>Update Password</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="<?= baseUrl('login_history') ?>">
-          <i class="bi bi-person-lock"></i>
+          <i class="bi bi-journal-text"></i>
           <span>User Access Logs</span>
         </a>
       </li>

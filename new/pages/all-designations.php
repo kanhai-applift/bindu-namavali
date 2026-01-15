@@ -26,10 +26,18 @@ $result = $stmt->get_result();
 
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4>Users</h4>
-    <a href="<?= baseUrl('dashboard') ?>" class="btn btn-secondary">
-      <i class="bi bi-chevron-left"></i> Back to Dashboard
-    </a>
+    <h4>
+      वापरकर्त्यांनी जतन केलेल्या पदनामांची यादी
+      <small class="text-muted sfs-2">(Designations saved under users)</small>
+    </h4>
+    
+    <div>
+      <button class="btn btn-secondary" onclick="window.history.back()">
+        <i class="bi bi-chevron-left"></i>
+        मागे जा (Go Back)
+      </button>
+    </div>
+
   </div>
 
   <table id="usersTable" class="table table-bordered table-striped w-100">

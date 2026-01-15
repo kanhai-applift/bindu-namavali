@@ -44,6 +44,15 @@ $stmt->close();
 if (!$designation) {
   exit('Designation not found');
 }
+
+// Fetch the list of users
+$sql = "SELECT * FROM employees WHERE designation_id = ? AND organization_id = ?";
+
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param('ii', $designationId, $orgId);
+$stmt->execute();
+$entries = $stmt->get_result();
+$count = 1;
 ?>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -52,16 +61,19 @@ if (!$designation) {
 
 <div class="container-fluid user_emp">
 
-  <?php
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">
+      रिक्त/कामगार कर्मचाऱ्यांची यादी : <?= $user['office_name'] ?>
+      <small class="text-muted sfs-2"> (Vaccant/Working employee list) </small>
+    </h4>
 
-  $sql = "SELECT * FROM employees WHERE designation_id = ? AND organization_id = ?";
-
-  $stmt = $mysqli->prepare($sql);
-  $stmt->bind_param('ii', $designationId, $orgId);
-  $stmt->execute();
-  $entries = $stmt->get_result();
-  $count = 1;
-  ?>
+    <div>
+      <button class="btn btn-secondary" onclick="window.history.back()">
+        <i class="bi bi-chevron-left"></i>
+        मागे जा (Go Back)
+      </button>
+    </div>
+  </div>
 
   <div class="border">
 
@@ -90,22 +102,22 @@ if (!$designation) {
             $label = 'pdf';
             // 1. Check if the specific column exists and is a valid PDF
             if (!empty($row[$col]) && $row[$col] !== 'NULL' && $row[$col] !== '' && strtolower(pathinfo($row[$col], PATHINFO_EXTENSION)) === 'pdf') {
-                
-                $file_name = trim($row[$col]);
-                $base_upload_dir = __DIR__."/../";
-                
-                // 2. Define the full system path for file_exists check
-                // Note: You likely want to check if the specific file exists, not just the directory
-                $full_system_path = $base_upload_dir . $file_name;
 
-                $pdf_files[] = [
-                    'name'   => $file_name,
-                    'url'    => baseUrl($file_name),
-                    'path'   => __DIR__."/../", // The folder path
-                    'type'   => $col,
-                    'label'  => $label,
-                    'exists' => file_exists($full_system_path)
-                ];
+              $file_name = trim($row[$col]);
+              $base_upload_dir = __DIR__ . "/../";
+
+              // 2. Define the full system path for file_exists check
+              // Note: You likely want to check if the specific file exists, not just the directory
+              $full_system_path = $base_upload_dir . $file_name;
+
+              $pdf_files[] = [
+                'name'   => $file_name,
+                'url'    => baseUrl($file_name),
+                'path'   => __DIR__ . "/../", // The folder path
+                'type'   => $col,
+                'label'  => $label,
+                'exists' => file_exists($full_system_path)
+              ];
             }
           ?>
             <tr>
@@ -113,7 +125,7 @@ if (!$designation) {
               <td><?= e($row['bindu_no']) ?></td>
               <td><?= e($row['bindu_category']) ?></td>
               <td><?= e($row['employee_name']) ?></td>
-              <td><?= e($row['employee_caste']).' '.e($row['employee_category']) ?></td>
+              <td><?= e($row['employee_caste']) . ' ' . e($row['employee_category']) ?></td>
               <td><?= e($row['date_of_appointment']) ?></td>
               <td><?= e($row['date_of_birth']) ?></td>
               <td><?= e($row['date_of_retirement']) ?></td>
