@@ -1,0 +1,33 @@
+RewriteEngine On
+RewriteBase /secure/
+
+# 1️⃣ API without .php
+RewriteRule ^api/([a-zA-Z0-9_-]+)$ api/$1.php [L]
+#RewriteRule ^api/ - [L]
+
+# 2️⃣ Allow direct access to api & pages
+RewriteRule ^(api|pages|assets|uploads)/ - [L]
+
+# 3️⃣ Front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?path=$1 [QSA,L]
+
+
+# 4️⃣ Environment Variables
+SetEnv DB_HOST "localhost"
+SetEnv DB_NAME "bindunamavali"
+SetEnv DB_USER "root"
+SetEnv DB_PASS "MSkrishna@14"
+
+SetEnv BASE_URL "http://c_office.local/secure/"
+SetEnv SN_VISHANY_LENGTH 2000
+SetEnv SN_VISHANY_PDF_SIZE 5
+SetEnv EMPLOYEE_REMARKS_LENGTH 2000
+SetEnv EMPLOYEE_PDF_SIZE 5
+SetEnv GOSHWARA_REMARK_LENGTH 500
+SetEnv POST_REMARK_LENTH 500
+
+SetEnv POST_SERVICE_PDF_SIZE 5
+SetEnv POST_LAYOUT_PDF_SIZE 5
+SetEnv POST_GOSHWARA_PDF_SIZE 5
