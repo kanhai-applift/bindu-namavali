@@ -1,0 +1,70 @@
+  :root{
+    --bar1:#ffcc80; --bar2:#ffb74d; --grey:#f2f2f2; --text:#000;
+  }
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f8f9fa;}
+
+  /* Header */
+  .header{
+    display:flex;align-items:center;gap:16px;
+    padding:12px 20px;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.1);
+    position:sticky;top:0;z-index:3000;
+  }
+  .header img{width:80px;height:auto}
+  .header h1{margin:0;font-size:20px;line-height:1.4;color:#333}
+
+  /* Navbar (click dropdown, mobile-friendly) */
+  .navbar{
+    display:flex;align-items:stretch;gap:0;
+    background:linear-gradient(to right,var(--bar1),var(--bar2));
+    position:relative;z-index:4000;
+    padding:0 8px;
+  }
+  .navbar .spacer{flex:1}
+  .dropdown{position:relative}
+  .dropbtn{
+    appearance:none;border:0;background:transparent;
+    color:var(--text);font-size:16px;padding:12px 16px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  }
+  .dropbtn::after{content:" ▾";font-size:12px}
+  .dropbtn:focus{outline:2px solid rgba(0,0,0,.15);outline-offset:2px}
+
+  .dropdown-content{
+    position:absolute;top:100%;left:0;
+    display:none;min-width:200px;background:var(--grey);
+    box-shadow:0 8px 20px rgba(0,0,0,.15);border-radius:6px;overflow:hidden;
+  }
+  .dropdown.align-right .dropdown-content{right:0;left:auto}
+
+  .dropdown.open .dropdown-content{display:block}
+
+  .dropdown-content a{
+    display:block;padding:10px 14px;text-decoration:none;color:#000;
+    background:var(--grey);transition:background .15s ease;
+    white-space:nowrap;
+  }
+  .dropdown-content a:hover{background:#ffb84d;color:#fff}
+
+  /* Slideshow */
+  .slideshow-container{max-width:100%;margin:0 auto;overflow:hidden;background:#fff}
+  .slides{display:none}
+  .slides img{width:100%;height:auto;display:block}
+
+  /* Footer */
+  .footer {
+    background:linear-gradient(to right,var(--bar1),var(--bar2));
+    padding:15px;
+    text-align:center;
+    color:#000;
+    font-size:14px;
+    margin-top:20px;
+    box-shadow:0 -2px 5px rgba(0,0,0,.1);
+  }
+  .footer a{
+    color:#000;
+    text-decoration:none;
+    font-weight:bold;
+  }
+  .footer a:hover{
+    text-decoration:underline;
+  }
