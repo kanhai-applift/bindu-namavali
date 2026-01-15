@@ -38,7 +38,7 @@ if (!$designation) {
 
 //============================= old code
 require_once(__DIR__ . '/../old-code/notebook.php');
-$edit_mode = 0;
+
 ?>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
@@ -140,7 +140,7 @@ $edit_mode = 0;
         <div class="row g-1">
           <div class="col-md-4 p-3">
             <label class="form-label">
-              <input type="checkbox" name="working" value="1" <?= ($edit_mode && $edit_data['karyarat']) || !$edit_mode ? 'checked' : '' ?>>
+              <input type="checkbox" name="working" value="0">
               &nbsp; &nbsp; कार्यरत
             </label>
           </div>
@@ -150,7 +150,7 @@ $edit_mode = 0;
           </div>
         </div>
         <div class="row g-1">
-          <textarea placeholder="शेरा Shera" class="form-control" name="remarks" rows="2"><?= $edit_mode ? htmlspecialchars($edit_data['shera']) : '' ?></textarea>
+          <textarea placeholder="शेरा Shera" class="form-control" name="remarks" rows="2"></textarea>
         </div>
       </div>
 
@@ -172,8 +172,8 @@ $edit_mode = 0;
 $page_scripts = [
   'https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.6/b-3.2.6/datatables.min.js',
   'https://code.jquery.com/ui/1.14.1/jquery-ui.js',
-  baseUrl('assets/js/employees-common.js'),
-  baseUrl('assets/js/employees-add.js')
+  baseUrl('assets/js/employees-common.js?v='.$v),
+  baseUrl('assets/js/employees-add.js?v='.$v)
 ];
 $inline_scripts = <<<JS
   $(function () {
@@ -181,7 +181,7 @@ $inline_scripts = <<<JS
 
     $('#employeesTable').DataTable({
       pageLength: 10,
-      order: [[5, 'desc']],
+      order: [[0, 'desc']],
       lengthMenu: [10, 25, 50, 100],
       responsive: true
     });

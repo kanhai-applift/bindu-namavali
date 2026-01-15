@@ -65,7 +65,7 @@ $inline_scripts = <<<JS
   $(document).ready(function () {
       $('#logsTable').DataTable({
           pageLength: 10,
-          order: [[5, 'desc']],
+          order: [[7, 'desc']],
           lengthMenu: [10, 25, 50, 100],
           responsive: true
       });

@@ -30,7 +30,13 @@ $result = $stmt->get_result();
 <div class="container-fluid">
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Approved Registered Post</h4>
+    <h4 class="mb-0">
+      <?= $type ? 'मान्यताप्राप्त' : 'नवीन' ?> नोंदणीकृत पोस्ट
+      <small class="text-muted sfs-2">
+        (<span class="text-uppercase"> <?= $segments[1] ?>  </span>
+        Registered Post)
+      </small>
+    </h4>
     <div>
       <a href="<?= baseUrl('dashboard/') ?>" class="btn btn-secondary">
         <i class="bi bi-chevron-left"></i> Back to Dashboard
@@ -62,8 +68,8 @@ $result = $stmt->get_result();
           <td><?= e($row['post_hash']) ?></td>
           <td><?= e($row['designation_name']) ?> </td>
           <td><?= e($row['approved']) ? 'Approved' : 'New' ?> </td>
-          <td><?= date('d-m-Y H:i:s', strtotime($row['created_at'])) ?></td>
-          <td><?= date('d-m-Y H:i:s', strtotime($row['approved_at'])) ?></td>
+          <td><?= formatToIST(e($row['created_at'])) ?></td>
+          <td><?= formatToIST(e($row['approved_at'])) ?></td>
           <td><?= e($row['approval_remarks']) ?></td>
           <td>
             <a href="<?= baseUrl('organisations-post-view/' . e($row['post_hash'])) ?>"

@@ -169,7 +169,7 @@ $count = 1;
 <!-- PDF Viewer Modal -->
 <div id="pdfModal" class="pdf-modal">
   <div class="pdf-modal-content">
-    <span class="close-modal" onclick="closePDFModal()">&times;</span>
+    <!-- <span class="close-modal" onclick="closePDFModal()">&times;</span> -->
     <iframe id="pdfViewer" class="pdf-viewer"></iframe>
   </div>
 </div>
@@ -189,6 +189,9 @@ $inline_scripts = <<<JS
     document.getElementById('sidebar').classList.toggle('collapsed');
 
     $('#notebookTable').DataTable({
+        pageLength: 100,
+        order: [[0, 'desc']], // Your current sorting
+        lengthMenu: [10, 25, 50, 100],
         dom: 'Bfrtip',
         buttons: [
             {

@@ -3,7 +3,7 @@
   <div class="card dashboard-card bg-sky text-white">
     <div class="card-body d-flex align-items-center justify-content-center text-center">
       <h3 class="mb-0">
-        मंजूर पद(Post)
+        मान्यताप्राप्त नोंदणीकृत पोस्ट
         <div class="muted sfs-2">(Approved Post)</div>
       </h3>
     </div>
@@ -20,7 +20,7 @@
   <div class="card dashboard-card bg-green text-white">
     <div class="card-body d-flex align-items-center justify-content-center text-center">
       <h3 class="mb-0">
-        नवीन पद
+        नवीन नोंदणीकृत पोस्ट
         <div class="muted sfs-2">(New Post waiting Approval)</div>
       </h3>
     </div>

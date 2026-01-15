@@ -3,6 +3,13 @@ require_once 'api-helper.php';
 
 $orgId = (int) $_SESSION['user_id'];
 
+/* 3️⃣ Authorization check */
+if (!in_array($_SESSION['role'], ['admin', 'superadmin'], true)) {
+  http_response_code(403);
+  respond('error', 'Unauthorized');
+}
+
+
 /* ===============================
   2. Decode & Validate Designation
 ================================ */
@@ -128,7 +135,7 @@ try {
 
             $insertSql = "
                 INSERT INTO organisations_post (
-                    organisation_id,
+                    organization_id,
                     designation_id,
                     designation_name,
                     post_hash, -- Using the unique integer here

@@ -44,7 +44,7 @@ foreach ($post_data as $p) {
   <div class="row" id="print">
     <div class="col-md-12">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="page-title" style="margin-top:3%">प्रकरण क्रमांक #<?php echo $row->post_hash; ?> Details</h3>
+        <h3>प्रकरण क्रमांक #<?php echo $row->post_hash; ?> Details</h3>
 
         <div>
           <button class="btn btn-secondary" onclick="window.history.back()">
@@ -63,7 +63,7 @@ foreach ($post_data as $p) {
           <p><strong>प्रकरण क्रमांक:</strong> <?php echo $row->post_hash; ?></p>
           <p><strong>प्रकरण प्रकार:</strong> <?php echo $row->designation_name; ?></p>
           <p><strong>Status:</strong> <span class="badge text-bg-<?= $row->approved ? "success" : "info"; ?>"><?= $row->approved ? "Approved" : "New"; ?></span></p>
-          <p><strong>Registration Date:</strong> <?php echo $row->created_at; ?></p>
+          <p><strong>Registration Date:</strong> <?= formatToIST($row->created_at); ?></p>
           <p><strong>प्रकरण माहिती:</strong> <?php echo $row->remarks; ?></p>
           <p><strong>File:</strong>
           <ol>
@@ -219,7 +219,7 @@ foreach ($post_data as $p) {
           <p><strong>प्रकरण क्रमांक:</strong> <?php echo $row->post_hash; ?></p>
           <p><strong>प्रकरण प्रकार:</strong> <?php echo $row->designation_name; ?></p>
           <p><strong>Status:</strong> <span class="status-approved"><?php echo $row->approved ? "Approved" : "New"; ?></span></p>
-          <p><strong>Registration Date:</strong> <?php echo $row->created_at; ?></p>
+          <p><strong>Registration Date:</strong> <?= formatToIST($row->created_at); ?></p>
         </div>
 
           <input type="hidden" name="post_hash" value="<?= $row->post_hash ?>" id="approvePostHash">
@@ -288,7 +288,7 @@ $(function () {
             modal.hide();
             $('#organisationPostTable').DataTable().ajax.reload(null, false);
           }, 800);
-
+          window.location.reload();
         } else {
           $('#approveAlert').html(
             '<div class="alert alert-danger">'+res.message+'</div>'

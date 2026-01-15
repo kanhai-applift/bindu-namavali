@@ -22,7 +22,10 @@ $result = $stmt->get_result();
 <div class="container-fluid">
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Designations</h4>
+    <h4 class="mb-3">
+      सेव्ह केलेल्या पदनामांची यादी
+      <small class="text-muted sfs-2">(Saved Designations)</small>
+    </h4>
 
     <div>
       <a href="<?= baseUrl('dashboard/') ?>" class="btn btn-secondary">
@@ -124,6 +127,8 @@ $inline_scripts = <<<JS
 
     $('#designationTable').DataTable({
       pageLength: 10,
+      order: [[0, 'desc']], // Your current sorting
+      lengthMenu: [10, 25, 50, 100],
       lengthChange: true,
       searching: true,
       ordering: true,

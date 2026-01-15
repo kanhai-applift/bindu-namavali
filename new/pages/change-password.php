@@ -40,7 +40,7 @@ if (!isset($_SESSION['user_id'])) {
             minlength="8"
             required>
           <div class="form-text">
-            Minimum 8 characters recommended
+            Min 8 chars, at least 1 Uppercase, 1 Lowercase, 1 Number, 1 Special Char
           </div>
         </div>
 

@@ -48,8 +48,6 @@ if (!$data) {
     </a>
   </div>
 
-  <div id="snEditAlert"></div>
-
   <div class="row justify-content-center border p-2">
     <div class="col-md-10 shadow p-4">
 
@@ -59,7 +57,7 @@ if (!$data) {
 
         <!-- KR No -->
         <div class="mb-3">
-          <label class="form-label">KR No</label>
+          <label class="form-label">क्र. क्र.</label>
           <input type="text"
             class="form-control"
             name="kr_no"
@@ -69,7 +67,7 @@ if (!$data) {
 
         <!-- Amal Tarikh -->
         <div class="mb-3">
-          <label class="form-label">Amal Tarikh</label>
+          <label class="form-label">अंमलबजावणीची तारीख</label>
           <input type="date"
             class="form-control"
             name="amal_tarik"
@@ -79,7 +77,7 @@ if (!$data) {
 
         <!-- GR No -->
         <div class="mb-3">
-          <label class="form-label">GR No</label>
+          <label class="form-label">शासन निर्णय / परिपत्रक</label>
           <input type="text"
             class="form-control"
             name="gr_no"
@@ -89,7 +87,7 @@ if (!$data) {
 
         <!-- Vishay -->
         <div class="mb-3">
-          <label class="form-label">Vishay</label>
+          <label class="form-label">विषय</label>
           <textarea class="form-control"
             name="vishay"
             rows="10"
@@ -117,9 +115,12 @@ if (!$data) {
             accept="application/pdf">
         </div>
 
+        <div id="snEditAlert" class="my-3"></div>
+
         <button type="submit" class="btn btn-primary">
           Update
         </button>
+
       </form>
 
     </div>

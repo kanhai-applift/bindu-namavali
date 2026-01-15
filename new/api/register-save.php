@@ -1,70 +1,113 @@
 <?php
-require_once __DIR__."/api-helper.php";
+require_once "api-helper.php";
 
-// Fetch inputs
-$registration_no = trim($_POST['registration_no'] ?? '');
-$office_name    = trim($_POST['office_name'] ?? '');
-$head_name      = trim($_POST['head_name'] ?? '');
-$district       = trim($_POST['district'] ?? '');
-$contact_no     = trim($_POST['contact_no'] ?? '');
+/* ===============================
+   3. Input Normalization
+================================ */
+$registrationNo = trim($_POST['registration_no'] ?? '');
+$officeName     = trim($_POST['office_name'] ?? '');
+$headName       = trim($_POST['head_name'] ?? '');
+$districtId     = (int)trim($_POST['district_id'] ?? '');
+$contactNo      = trim($_POST['contact_no'] ?? '');
 $email          = trim($_POST['email'] ?? '');
-$password       = $_POST['password'] ?? '';
-$confirm        = $_POST['confirm_password'] ?? '';
+$password       = trim($_POST['password']) ?? '';
+$confirm        = trim($_POST['confirm_password']) ?? '';
 
-// Server-side validation
+/* ===============================
+   4. Required Fields Validation
+================================ */
 if (
-    !$registration_no || !$office_name || !$head_name ||
-    !$district || !$contact_no || !$email || !$password
+    $registrationNo === '' ||
+    $officeName === '' ||
+    $headName === '' ||
+    $districtId === '' ||
+    $contactNo === '' ||
+    $email === '' ||
+    $password === ''
 ) {
-    respond('error', 'All fields are required.');
+    respond('error', 'All fields are required');
+}
+
+/* ===============================
+   5. Length & Format Validation
+================================ */
+if (
+    mb_strlen($registrationNo) > 50 ||
+    mb_strlen($officeName) > 150 ||
+    mb_strlen($headName) > 150
+) {
+    respond('error', 'Invalid input length');
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    respond('error', 'Invalid email address.');
+    respond('error', 'Invalid email address');
+}
+
+if (!preg_match('/^[0-9]{10}$/', $contactNo)) {
+    respond('error', 'Invalid contact number');
+}
+
+if (mb_strlen($password) < 8) {
+    respond('error', 'Password must be at least 8 characters long');
 }
 
 if ($password !== $confirm) {
-    respond('error', 'Passwords do not match.');
+    respond('error', 'Passwords do not match');
 }
 
-if (!preg_match('/^[0-9]{10}$/', $contact_no)) {
-    respond('error', 'Invalid contact number.');
-}
-
-// Check duplicates
-$stmt = $mysqli->prepare("SELECT id FROM users WHERE email=? OR registration_no=?");
-$stmt->bind_param("ss", $email, $registration_no);
+/* ===============================
+   6. Duplicate Check (Safe)
+================================ */
+$stmt = $mysqli->prepare(
+    "SELECT id FROM users WHERE email = ? OR registration_no = ? LIMIT 1"
+);
+$stmt->bind_param("ss", $email, $registrationNo);
 $stmt->execute();
 $stmt->store_result();
 
 if ($stmt->num_rows > 0) {
-    respond('error', 'Email or Registration No already exists.');
+    respond('error', 'Email or Registration Number already exists');
 }
 $stmt->close();
 
-// Hash password
-$password_hash = password_hash($password, PASSWORD_DEFAULT);
+/* ===============================
+   7. Password Hashing (Strong)
+================================ */
+$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-// Insert
-$stmt = $mysqli->prepare("
-    INSERT INTO users
-    (registration_no, office_name, head_name, district, contact_no, email, password_hash)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-");
-
-$stmt->bind_param(
-    "sssssss",
-    $registration_no,
-    $office_name,
-    $head_name,
-    $district,
-    $contact_no,
-    $email,
-    $password_hash
-);
-
-if ($stmt->execute()) {
-    respond('success', 'Registration successful.');
+if ($passwordHash === false) {
+    respond('error', 'Password processing failed');
 }
 
-respond('error', 'Registration failed.');
+/* ===============================
+   8. Insert User (Prepared)
+================================ */
+$stmt = $mysqli->prepare(
+    "INSERT INTO users
+     (registration_no, office_name, head_name, district_id, contact_no, email, password_hash, status)
+     VALUES (?, ?, ?, ?, ?, ?, ?, 'inactive')"
+);
+
+$stmt->bind_param(
+    "sssisss",
+    $registrationNo,
+    $officeName,
+    $headName,
+    $districtId,
+    $contactNo,
+    $email,
+    $passwordHash
+);
+
+$stmt->execute();
+
+if ($stmt->errno) {
+    respond('error', 'Registration failed');
+}
+
+$stmt->close();
+
+/* ===============================
+   9. Success Response
+================================ */
+respond('success', 'Registration successful.');

@@ -50,6 +50,22 @@ function formatDate($mysqlDate) {
     return $date ? $date->format('d/m/Y') : '';
 }
 
+function formatToIST(string $dateString): string {
+    if(empty($dateString)) return '--';
+    try {
+        // 1. Create a DateTime object with the input date (assuming input is UTC or Server Time)
+        $date = new DateTime($dateString);
+
+        // 2. Set the timezone to IST (Asia/Kolkata)
+        $date->setTimezone(new DateTimeZone('Asia/Kolkata'));
+
+        // 3. Format: d/m/Y (Date), h:i a (12-hour time with am/pm)
+        return $date->format('d/m/Y h:i a');
+    } catch (Exception $e) {
+        return "Invalid Date";
+    }
+}
+
 function getCacheVersion(): int {
     $interval = 300; // 5 minutes in seconds
     return floor(time() / $interval);

@@ -10,6 +10,7 @@ $orgId = $_SESSION['user_id'];
 $sql = "SELECT u.*, d.district_name as district
         FROM users u
         LEFT JOIN districts d ON d.id = u.district_id
+        WHERE role = 'admin'
         ORDER BY id DESC";
 
 $stmt = $mysqli->prepare($sql);

@@ -87,6 +87,8 @@ $inline_scripts = <<<JS
 
     $('#usersTable').DataTable({
       pageLength: 10,
+      order: [[0, 'desc']], // Your current sorting
+      lengthMenu: [10, 25, 50, 100],
       lengthChange: true,
       searching: true,
       ordering: true,

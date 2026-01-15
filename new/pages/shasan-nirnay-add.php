@@ -10,7 +10,7 @@ require_once(__DIR__ . '/../config/db.php');
 <div class="container-fluid">
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-3">
+    <h4>
       नवीन शासन निर्णय जोडा
       <small class="text-muted sfs-2">(Add new Shasan Nirnay)</small>
     </h4>
@@ -18,8 +18,6 @@ require_once(__DIR__ . '/../config/db.php');
       <i class="bi bi-chevron-left"></i> Back to List
     </a>
   </div>
-
-  <div id="snAlert"></div>
 
   <div class="row justify-content-center border p-2">
     <div class="col-md-10 shadow p-4">
@@ -29,28 +27,28 @@ require_once(__DIR__ . '/../config/db.php');
 
         <!-- KR No -->
         <div class="mb-3">
-          <label class="form-label">KR No</label>
+          <label class="form-label">क्र. क्र.</label>
           <input type="text" class="form-control" name="kr_no" required>
           <div class="invalid-feedback">KR No is required</div>
         </div>
 
         <!-- Amal Tarikh -->
         <div class="mb-3">
-          <label class="form-label">Amal Tarikh</label>
+          <label class="form-label">अंमलबजावणीची तारीख</label>
           <input type="date" class="form-control" name="amal_tarik" required>
           <div class="invalid-feedback">Date is required</div>
         </div>
 
         <!-- GR No -->
         <div class="mb-3">
-          <label class="form-label">GR No</label>
+          <label class="form-label">शासन निर्णय / परिपत्रक</label>
           <input type="text" class="form-control" name="gr_no" required>
-          <div class="invalid-feedback">GR No is required</div>
+          <div class="invalid-feedback">This No is required</div>
         </div>
 
         <!-- Vishay -->
         <div class="mb-3">
-          <label class="form-label">Vishay</label>
+          <label class="form-label">विषय</label>
           <textarea class="form-control" name="vishay" rows="10" required></textarea>
           <div class="invalid-feedback">Vishay is required</div>
         </div>
@@ -61,9 +59,12 @@ require_once(__DIR__ . '/../config/db.php');
           <input type="file" class="form-control" name="pdf_file" accept="application/pdf">
         </div>
 
+        <div id="snAlert" class="my-3"></div>
+
         <button type="submit" class="btn btn-primary">
           Save
         </button>
+
       </form>
     </div>
   </div>

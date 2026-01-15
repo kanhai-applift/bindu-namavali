@@ -162,7 +162,7 @@ if (!$atirikt_pade && $ekun_bharavayachi_pade) {
           <p><strong>प्रकरण क्रमांक:</strong> <?php echo $row->post_hash; ?></p>
           <p><strong>पदाचे नाव:</strong> <?php echo $row->designation_name; ?></p>
           <p><strong>Status:</strong> <span class="badge text-bg-<?= $row->approved ? "success" : "info"; ?>"><?= $row->approved ? "Approved" : "New"; ?></span></p>
-          <p><strong>Registration Date:</strong> <?php echo $row->created_at; ?></p>
+          <p><strong>Registration Date:</strong> <?= formatToIST($row->created_at); ?></p>
           <p><strong>प्रकरण माहिती:</strong> <?php echo $row->remarks; ?></p>
 
           <!-- ✅ FILE 1 Information -->

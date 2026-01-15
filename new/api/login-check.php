@@ -1,22 +1,46 @@
 <?php
-session_start();
-require_once __DIR__."/api-helper.php";
+declare(strict_types=1);
 
-$email = trim($_POST['email'] ?? '');
+require_once 'api-helper.php';
+
+/* ===============================
+   3. Input Normalization
+================================ */
+$email    = strtolower(trim($_POST['email'] ?? ''));
 $password = $_POST['password'] ?? '';
 
-if (!$email || !$password) {
-    respond('error', 'Email and password required');
+if (
+    $email === '' ||
+    strlen($email) > 255 ||
+    $password === ''
+) {
+    respond('error', 'Invalid login credentials');
 }
 
-$stmt = $mysqli->prepare("
-    SELECT id, office_name, head_name, password_hash, role, status
-    FROM users
-    WHERE email = ?
-    LIMIT 1
-");
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    respond('error', 'Invalid login credentials');
+}
 
-$stmt->bind_param("s", $email);
+/* ===============================
+   4. Rate Limiting (Critical)
+================================ */
+/*
+if (!rateLimit('login_' . $email, 5, 300)) {
+    respond('error', 'Too many login attempts. Try again later.');
+}
+*/
+
+/* ===============================
+   5. Fetch User (Prepared Statement)
+================================ */
+$stmt = $mysqli->prepare(
+    "SELECT id, office_name, head_name, password_hash, role, status
+     FROM users
+     WHERE email = ?
+     LIMIT 1"
+);
+
+$stmt->bind_param('s', $email);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -25,62 +49,69 @@ if ($result->num_rows !== 1) {
 }
 
 $user = $result->fetch_assoc();
+$stmt->close();
 
+/* ===============================
+   6. Account Status Check
+================================ */
 if ($user['status'] !== 'active') {
     respond('error', 'Account not active');
 }
 
+/* ===============================
+   7. Password Verification
+================================ */
 if (!password_verify($password, $user['password_hash'])) {
     respond('error', 'Invalid login credentials');
 }
 
+/* ===============================
+   8. Secure Session Handling
+================================ */
+session_regenerate_id(true);
 
-function getUserIP() {
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-        return $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
-    }
-    return $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
-}
+$_SESSION['user_id']     = (int) $user['id'];
+$_SESSION['name']        = $user['head_name'];
+$_SESSION['role']        = $user['role'];
+$_SESSION['office_name'] = $user['office_name'];
+$_SESSION['logged_in']   = true;
+$_SESSION['last_active'] = time();
 
+/* ===============================
+   9. Secure IP Logging (Admin Only)
+================================ */
 if ($user['role'] === 'admin') {
 
-    $ip = getUserIP();
-    $city = null;
-    $state = null;
+    function getClientIP(): string
+    {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
+        }
+        return $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
+    }
 
-    $logStmt = $mysqli->prepare("
-        INSERT INTO user_access_logs
-        (user_id, email, ip_address, city, state)
-        VALUES (?, ?, ?, ?, ?)
-    ");
+    $ip = getClientIP();
+
+    $logStmt = $mysqli->prepare(
+        "INSERT INTO user_access_logs
+         (user_id, email, ip_address)
+         VALUES (?, ?, ?)"
+    );
 
     $logStmt->bind_param(
-        "issss",
+        'iss',
         $user['id'],
         $email,
-        $ip,
-        $city,
-        $state
+        $ip
     );
 
     $logStmt->execute();
+    $logStmt->close();
 }
 
-
-/* SESSION CREATION */
-$_SESSION['user_id'] = $user['id'];
-$_SESSION['name'] = $user['head_name'];
-$_SESSION['role'] = $user['role'];
-$_SESSION['office_name'] = $user['office_name'];
-$_SESSION['logged_in'] = true;
-
-/* Redirect logic */
-$redirect = 'dashboard';
-
+/* ===============================
+   10. Unified Response
+================================ */
 respond('success', 'Login successful', [
-    'redirect' => $redirect
+    'redirect' => 'dashboard'
 ]);
-
-

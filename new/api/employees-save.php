@@ -159,7 +159,7 @@ try {
   $stmt = $mysqli->prepare($sql);
 
   $stmt->bind_param(
-    "iiisssssssssssis",
+    "iiisssssssssssiss",
     $orgId,
     $designationId,
     $binduNo,

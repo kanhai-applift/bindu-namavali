@@ -4,7 +4,6 @@ require_once 'api-helper.php';
 /* ===============================
    2. Authentication & Authorization
 ================================ */
-
 if (
     !isset($_SESSION['user_id'], $_SESSION['role']) ||
     $_SESSION['role'] !== 'superadmin'

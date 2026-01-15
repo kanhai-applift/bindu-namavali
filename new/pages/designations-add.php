@@ -8,7 +8,7 @@
         <i class="bi bi-chevron-left"></i> Back to Designations
       </a>
       <a href="<?= baseUrl('designations') ?>" class="btn btn-primary">
-        <i class="bi bi-plus-lg"></i> List Designation
+        <i class="bi bi-list-check"></i> List Designation
       </a>
     </div>
   </div>

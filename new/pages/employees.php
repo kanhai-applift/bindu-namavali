@@ -75,11 +75,26 @@ $inline_scripts = <<<JS
   $(function () {
     document.getElementById('sidebar').classList.toggle('collapsed');
 
-    $('#employeesTable').DataTable({
-      pageLength: 10,
-      order: [[5, 'desc']],
-      lengthMenu: [10, 25, 50, 100],
-      responsive: true
+    var t = $('#employeesTable').DataTable({
+        pageLength: 10,
+        order: [[1, 'asc']], // Your current sorting
+        columnDefs: [{
+            searchable: false,
+            orderable: false,
+            targets: 0, // Targets the first column
+        }],
+        lengthMenu: [10, 25, 50, 100],
+        responsive: true
+    });
+
+    // Event listener to fill the serial number column
+    t.on('draw.dt', function () {
+      console.log('Event called draw.dt');
+      
+        var info = t.page.info();
+        t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1 + info.start;
+        });
     });
   });
 JS;
