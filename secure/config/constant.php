@@ -4,7 +4,7 @@ define('HASHID_SALT','roster-designations-secret-KANHAI');
 define('DB_HOST', $_SERVER['DB_HOST'] ?? 'localhost');
 define('DB_USER', $_SERVER['DB_USER'] ?? 'root');
 define('DB_PASS', $_SERVER['DB_PASS'] ?? 'MSkrishna@14');
-define('DB_DATABASE', $_SERVER['DB_DATABASE'] ?? 'bindunamavali');
+define('DB_NAME', $_SERVER['DB_NAME'] ?? 'bindunamavali');
 
 define('BASE_URL', $_SERVER['BASE_URL'] ?? 'http://c_office.local/secure/');
 define('BASE_PATH', $_SERVER['DOCUMENT_ROOT']);
